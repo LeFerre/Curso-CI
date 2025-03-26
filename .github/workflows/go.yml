@@ -12,7 +12,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        go-version: [1.17, 1.18]
+        go-version: [1.17, 1.18]  # Consistência no nome da variável
         os: [ubuntu-latest, ubuntu-18.04]
     steps:
     - uses: actions/checkout@v3
@@ -20,7 +20,7 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v3
       with:
-        go-version: ${{ matrix.go_version }}
+        go-version: ${{ matrix.go-version }}  # Corrigido para "go-version"
       
     - name: Build-DB
       run: docker-compose build
@@ -29,16 +29,22 @@ jobs:
       run: docker-compose up -d
 
     - name: Test
-      run: go test -v main_test.go 
-      
-  
+      run: go test -v main_test.go  # Executando os testes
+
   build:
-    needs: test
+    needs: test  # O job "build" depende do job "test"
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: ['ubuntu-latest', 'ubuntu-18.04']
+        go-version: [1.17, 1.18]  # Inclua a versão do Go aqui
+        os: [ubuntu-latest, ubuntu-18.04]
     steps:
     - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: ${{ matrix.go-version }}  # Correção na variável "go-version"
+    
     - name: Build
       run: go build -v main.go
