@@ -11,14 +11,14 @@ jobs:
   test:
     runs-on: ${{ matrix.os }}
     env:
-      HOST: localhost 
+      HOST: localhost
       PORT: 5432
-      USER: root 
-      PASSWWORD: root 
-      DBNAME: root      
+      USER: root
+      PASSWORD: root
+      DBNAME: root     
     strategy:
       matrix:
-        go_version: ['1.19', '1.17', '1.18']
+        go_version: ['1.19', '1.18', '1.17']
         os: ['ubuntu-latest']
     steps:
       - uses: actions/checkout@v3
@@ -56,7 +56,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        go_version: ['1.19', '1.17', '1.18']
+        go_version: ['1.19', '1.18', '1.17']
         os: ['ubuntu-latest']
     steps:
       - uses: actions/checkout@v3
