@@ -7,38 +7,30 @@ on:
     branches: [ '*' ]
 
 jobs:
+
   test:
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.go_version }}
     strategy:
       matrix:
         go_version: ['1.18', '1.17', '>=1.18']
         os: ['ubuntu-latest', 'ubuntu-18.04']
     steps:
     - uses: actions/checkout@v3
+
     - name: Set up Go
       uses: actions/setup-go@v3
       with:
         go-version: ${{ matrix.go_version }}
-
-    - name: Install Docker Compose
-      run: |
-        sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-        sudo chmod +x /usr/local/bin/docker-compose
-        docker-compose --version  # Verifica se o docker-compose foi instalado corretamente
-
+      
     - name: Build-DB
       run: docker-compose build
       
     - name: Create-DB
       run: docker-compose up -d
-    
-    - name: Wait for DB to be ready
-      run: ./scripts/wait-for-it.sh db:5432 --timeout=60 -- echo "DB is ready"
 
     - name: Test
       run: go test -v main_test.go 
       
-  
   build:
     needs: test
     runs-on: ${{ matrix.os }}
