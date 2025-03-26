@@ -25,6 +25,9 @@ jobs:
       
     - name: Create-DB
       run: docker-compose up -d
+    
+    - name: Wait for DB to be ready
+      run: ./scripts/wait-for-it.sh db:5432 --timeout=60 -- echo "DB is ready"
 
     - name: Test
       run: go test -v main_test.go 
