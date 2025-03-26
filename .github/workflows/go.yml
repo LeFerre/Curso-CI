@@ -22,8 +22,11 @@ jobs:
         with:
           go-version: ${{ matrix.go_version }}
     
-      - name: Verify Go version
-        run: go version
+      - name: Verify Go installation
+        run: |
+          go version
+          which go
+          echo $PATH
 
       - name: Build-DB
         run: docker-compose build
@@ -48,6 +51,12 @@ jobs:
         uses: actions/setup-go@v3
         with:
           go-version: ${{ matrix.go_version }}
+
+      - name: Verify Go installation
+        run: |
+          go version
+          which go
+          echo $PATH
 
       - name: Build
         run: go build -v main.go
